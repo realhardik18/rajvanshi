@@ -1,110 +1,60 @@
-export default function Home() {
-    return (
-      <div className="bg-gray-950 min-h-screen text-white flex">
-        {/* Left Sidebar */}
-        <div className="w-64 bg-gray-800 p-6 space-y-8">
-          {/* Logo / Club Name */}
-          <div className="text-2xl font-bold text-red-600 mb-6">Rajvanshi Cricket Club</div>
+export default function SignUp() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-950">
+      <div className="flex w-full rounded-lg bg-gray-950 shadow-lg overflow-hidden">
+        <div className="w-full p-8 sm:w-2/3">
+          <h1 className="text-4xl font-bold text-red-600 mb-4">
+            Rajvanshi Cricket Club Delhi
+          </h1>
+          <p className="text-sm text-gray-100 mb-8">
+            To use website, Please Create An Account.
+          </p>
           
-          {/* Search Bar */}
-          <div>
-            <input 
-              type="text" 
-              placeholder="Search" 
-              className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
-            />
-          </div>
-          
-          {/* Sidebar Menu */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-3">
-              <i className="fas fa-user text-gray-400"></i>
-              <span className="text-gray-400">Profile</span>
+          <form className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-100">Name</label>
+              <input type="text" placeholder="Enter your name" className="mt-1 w-full p-2 bg-gray-950 text-white border border-gray-600 rounded" />
             </div>
-            <div className="flex items-center space-x-3">
-              <i className="fas fa-cogs text-gray-400"></i>
-              <span className="text-gray-400">Settings</span>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-100">Username</label>
+              <input type="text" placeholder="Choose a username" className="mt-1 w-full p-2 bg-gray-950 text-white border border-gray-600 rounded" />
             </div>
-            <div className="flex items-center space-x-3">
-              <i className="fas fa-plus-circle text-gray-400"></i>
-              <span className="text-gray-400">Create Post</span>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-100">Phone Number</label>
+              <input type="tel" placeholder="Enter your phone number" className="mt-1 w-full p-2 bg-gray-950 text-white border border-gray-600 rounded" />
             </div>
-          </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-100">Password</label>
+              <input type="password" placeholder="Choose a password" className="mt-1 w-full p-2 bg-gray-950 text-white border border-gray-600 rounded" />
+            </div>
+
+            <button                 
+              type="submit" 
+              className="w-full mt-4 py-3 bg-red-600 text-white text-lg hover:bg-red-700"                              
+            >
+              Sign Up
+            </button>
+          </form>
+
+          <p className="mt-4 text-sm text-gray-400">
+            Already have an account?{" "}
+            <a href="/sign-in" className="text-red-600 font-medium">Sign in</a>
+          </p>
         </div>
-  
-        {/* Feed Section */}
-        <div className="flex-1 p-6">
-          {/* Header */}
-          <header className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-red-600">Rajvanshi Cricket Club Feed</h1>
-          </header>
-  
-          {/* Feed */}
-          <div className="space-y-8">
-            {/* Post 1 */}
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gray-600"></div>
-                <div>
-                  <h3 className="text-lg font-semibold">User Name</h3>
-                  <p className="text-sm text-gray-400">Posted 1 hour ago</p>
-                </div>
-              </div>
-              <p className="text-gray-200 mb-4">
-                Just played a great match! #CricketLife
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-gray-400">
-                  <div className="flex space-x-4">
-                    <button className="flex items-center hover:text-red-600">
-                      <i className="fas fa-thumbs-up mr-2"></i> Like
-                    </button>
-                    <button className="flex items-center hover:text-red-600">
-                      <i className="fas fa-comment mr-2"></i> Comment
-                    </button>
-                    <button className="flex items-center hover:text-red-600">
-                      <i className="fas fa-share-alt mr-2"></i> Share
-                    </button>
-                  </div>
-                  <button className="text-red-600 hover:text-red-700">Follow</button>
-                </div>
-              </div>
-            </div>
-  
-            {/* Post 2 */}
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gray-600"></div>
-                <div>
-                  <h3 className="text-lg font-semibold">Another User</h3>
-                  <p className="text-sm text-gray-400">Posted 3 hours ago</p>
-                </div>
-              </div>
-              <p className="text-gray-200 mb-4">
-                Great day for cricket! 🌞
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-gray-400">
-                  <div className="flex space-x-4">
-                    <button className="flex items-center hover:text-red-600">
-                      <i className="fas fa-thumbs-up mr-2"></i> Like
-                    </button>
-                    <button className="flex items-center hover:text-red-600">
-                      <i className="fas fa-comment mr-2"></i> Comment
-                    </button>
-                    <button className="flex items-center hover:text-red-600">
-                      <i className="fas fa-share-alt mr-2"></i> Share
-                    </button>
-                  </div>
-                  <button className="text-red-600 hover:text-red-700">Follow</button>
-                </div>
-              </div>
-            </div>
-  
-            {/* More Posts... */}
-          </div>
+
+        {/* Right SVG Section */}
+        <div className="hidden sm:block w-1/3 bg-red-600 p-8">
+          {/* Replace with your SVG code */}
+          <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />
+            <circle cx="8" cy="8" r="3" stroke="white" strokeWidth="2" />
+            <circle cx="16" cy="16" r="2" stroke="white" strokeWidth="2" />
+          </svg>
         </div>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}
