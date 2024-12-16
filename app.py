@@ -124,4 +124,16 @@ def post():
     flash("Post created successfully.", "success")
     return redirect("/")
 
+@app.route('/user/<id>')
+def user_profile(id):
+    user = User.get_user_by_id(ObjectId(id))
+    if not user:
+        flash("User not found.", "error")
+        return redirect("/")
+
+    posts = Post.get_posts_by_user(ObjectId(id))
+    is_current_user = "user" in session and session["user"]["id"] == id
+
+    return render_template("user_profile.html", user=user, posts=posts, is_current_user=is_current_user)
+
 app.run(debug=True)

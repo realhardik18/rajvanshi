@@ -50,7 +50,22 @@ class User:
         )
         if result.matched_count:
             return {"success": "Name updated successfully."}
-        return {"error": "User not found."}    
+        return {"error": "User not found."}  
+    @staticmethod
+    def get_posts_by_user(user_id):
+        # Replace with your database query logic
+        posts = db.posts.find({"user_id": user_id}).sort("created_at", -1)
+        return list(posts)      
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        # Replace with your database query logic
+        user = db.users.find_one({"_id": user_id})
+        return user       
+    
+
+
+
 
 class Post:
     @staticmethod
@@ -70,5 +85,17 @@ class Post:
     def get_all_posts():
         # Fetch posts from the database
         return db.posts.find().sort("created_at", -1)
+    
+    @staticmethod
+    def get_posts_by_user(user_id):
+        # Replace with your database query logic
+        posts = db.posts.find({"user_id": user_id}).sort("created_at", -1)
+        return list(posts)      
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        # Replace with your database query logic
+        user = db.users.find_one({"_id": user_id})
+        return user            
 
     
