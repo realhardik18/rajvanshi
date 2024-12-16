@@ -1,10 +1,21 @@
 from flask import Flask, render_template, request, redirect, session, flash
 from models import User, Post
 from bson import ObjectId
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "mp4", "mov", "avi"}
 
+app.config["UPLOAD_FOLDER"] = 'uploads'
+
+# Ensure the upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def home():
@@ -73,11 +84,10 @@ def logout():
     return redirect("/login")
 
 @app.route('/create')
-def create():        
+def create():
     if "user" in session:
-        posts = Post.get_all_posts()
         return render_template("create.html", user=session["user"])
-    return redirect('/login')    
+    return redirect('/login')        
 
 @app.route('/post', methods=["POST"])
 def post():
@@ -85,12 +95,25 @@ def post():
         return redirect("/login")
 
     content = request.form.get("content")
-    if not content:
-        flash("Post content cannot be empty.", "error")
-        return redirect("/")
+    file = request.files.get("file")
 
-    Post.create_post(user_id=session["user"]["id"], content=content)
+    if not content and not file:
+        flash("Post content or file is required.", "error")
+        return redirect("/create")
+
+    file_path = None
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(file_path)
+
+    Post.create_post(
+        user_id=session["user"]["id"],
+        content=content,
+        file_path=file_path,
+    )
     flash("Post created successfully.", "success")
     return redirect("/")
+
 
 app.run(debug=True)

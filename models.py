@@ -3,6 +3,7 @@ from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from datetime import datetime
 from dotenv import load_dotenv
+from bson import ObjectId
 
 # Load environment variables
 load_dotenv()
@@ -53,17 +54,20 @@ class User:
 
 class Post:
     @staticmethod
-    def create_post(user_id, content):
-        """Create a new post."""
-        posts_collection.insert_one({
-            "user_id": user_id,
+    def create_post(user_id, content, file_path=None):
+        # Example implementation using a database like MongoDB
+        post = {
+            "user_id": ObjectId(user_id),
             "content": content,
-            "created_at": datetime.utcnow()            
-        })
-        return {"success": "Post created successfully."}
+            "file_path": file_path,
+            "created_at": datetime.utcnow(),
+        }
+        # Save to database (adjust to your DB logic)
+        db.posts.insert_one(post)
 
     @staticmethod
     def get_all_posts():
-        """Fetch all posts, sorted by newest first."""
-        return list(posts_collection.find().sort("created_at", -1))
+        # Fetch posts from the database
+        return db.posts.find().sort("created_at", -1)
+
     
