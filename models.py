@@ -58,7 +58,7 @@ class Post:
         posts_collection.insert_one({
             "user_id": user_id,
             "content": content,
-            "created_at": datetime.utcnow()
+            "created_at": datetime.utcnow()            
         })
         return {"success": "Post created successfully."}
 
