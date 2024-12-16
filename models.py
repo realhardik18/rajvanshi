@@ -61,6 +61,7 @@ class Post:
             "content": content,
             "file_path": file_path,
             "created_at": datetime.utcnow(),
+
         }
         # Save to database (adjust to your DB logic)
         db.posts.insert_one(post)

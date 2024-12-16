@@ -9,13 +9,10 @@ app.secret_key = "your_secret_key"
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "mp4", "mov", "avi"}
 
-app.config["UPLOAD_FOLDER"] = 'uploads'
+app.config["UPLOAD_FOLDER"] = 'static/uploads'
 
 # Ensure the upload folder exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+os.makedirs('static/uploads', exist_ok=True)
 
 @app.route('/')
 def home():
@@ -89,6 +86,9 @@ def create():
         return render_template("create.html", user=session["user"])
     return redirect('/login')        
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/post', methods=["POST"])
 def post():
     if "user" not in session:
@@ -103,17 +103,25 @@ def post():
 
     file_path = None
     if file and allowed_file(file.filename):
+        # Secure the filename to avoid any security issues
         filename = secure_filename(file.filename)
+        
+        # Construct the file path
         file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        
+        # Save the file
         file.save(file_path)
 
+        # Debugging: Check if the file is saved correctly
+        flash(f"File successfully saved to: {file_path}", "info")
+
+    # Save the post to the database
     Post.create_post(
         user_id=session["user"]["id"],
         content=content,
-        file_path=file_path,
+        file_path=file_path  # Store the file path in the post
     )
     flash("Post created successfully.", "success")
     return redirect("/")
-
 
 app.run(debug=True)

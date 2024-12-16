@@ -29,17 +29,14 @@
                 <p class="text-gray-900 dark:text-gray-100 mb-2">{{ post.content }}</p>
                 {% if post.file_path %}
                 {% if post.file_path.endswith('.mp4') or post.file_path.endswith('.mov') or post.file_path.endswith('.avi') %}
-                <video class="w-full rounded-md mt-2" controls>
-                    <source src="{{ url_for('static', filename=post.file_path.split('static/')[1]) }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                {% else %}
-                <img class="w-full rounded-md mt-2" src="{{ url_for('static', filename=post.file_path.split('static/')[1]) }}" alt="Uploaded content">
-                {% endif %}
-                {% endif %}
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                    Posted at {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}
-                </div>
+                    <video class="w-full rounded-md mt-2" controls>
+                        <source src="{{ url_for('static', filename=post.file_path) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}                    
+                    <img class="w-full rounded-md mt-2" src="{{ url_for('static', filename= post.file_path[7:]|replace('\\', '/')) }}" alt="Uploaded content">
+                {% endif %}                
+            {% endif %}            
             </div>
             {% endfor %}
         </div>        
