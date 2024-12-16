@@ -112,8 +112,7 @@ def post():
         # Save the file
         file.save(file_path)
 
-        # Debugging: Check if the file is saved correctly
-        flash(f"File successfully saved to: {file_path}", "info")
+        # Debugging: Check if the file is saved correctly        
 
     # Save the post to the database
     Post.create_post(

@@ -11,7 +11,17 @@
 <body class="bg-lightBg dark:bg-darkBg text-gray-900 dark:text-gray-100 min-h-screen">
     {% include 'navbar.html' %}
     <div class="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-extrabold text-accent mb-6">{{ user.name }}</h1>
+        <!-- Profile Card -->
+        <div class="bg-white dark:bg-primary p-6 rounded-lg shadow-md flex items-center space-x-4 mb-6">
+            <!-- Profile Picture -->
+            <img class="w-16 h-16 rounded-full object-cover" src="{{ url_for('static', filename='pfp/default.jpg') }}" alt="User Profile Picture">
+            <div>
+                <!-- User's Name -->
+                <h1 class="text-3xl font-extrabold text-accent">{{ user.name }}</h1>
+                <!-- Date Joined -->
+                <p class="text-sm text-gray-500 dark:text-gray-400">Joined on {{ user.created_at.strftime('%Y-%m-%d') }}</p>
+            </div>
+        </div>
         
         {% if is_current_user %}
         <a href="/edit-profile" class="inline-block bg-accent hover:bg-red-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
@@ -27,11 +37,11 @@
                 {% if post.file_path %}
                     {% if post.file_path.endswith('.mp4') or post.file_path.endswith('.mov') or post.file_path.endswith('.avi') %}
                         <video class="w-full rounded-md mt-2" controls>
-                            <source src="{{ url_for('static', filename=post.file_path|replace('\\', '/')) }}" type="video/mp4">
+                            <source src="{{ url_for('static', filename=post.file_path[7:]|replace('\\', '/')) }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     {% else %}
-                        <img class="w-full rounded-md mt-2" src="{{ url_for('static', filename=post.file_path|replace('\\', '/')) }}" alt="Uploaded content">
+                        <img class="w-full rounded-md mt-2" src="{{ url_for('static', filename=post.file_path[7:]|replace('\\', '/')) }}" alt="Uploaded content">
                     {% endif %}
                 {% endif %}
                 <div class="text-sm text-gray-500 dark:text-gray-400">

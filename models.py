@@ -73,6 +73,7 @@ class Post:
         # Example implementation using a database like MongoDB
         post = {
             "user_id": ObjectId(user_id),
+            "posted_by":User.get_user_by_id(ObjectId(user_id))['name'],
             "content": content,
             "file_path": file_path,
             "created_at": datetime.utcnow(),

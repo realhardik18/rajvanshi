@@ -29,7 +29,7 @@
                 <div class="text-sm text-gray-500 dark:text-gray-400">
                   Posted by 
                   <a href="/user/{{ post.user_id }}" class="text-accent hover:underline">
-                      {{ post.user_id }}
+                      {{ post.posted_by }}
                   </a> 
                   at {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}
                 </div>
