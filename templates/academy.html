@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academies</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Configuration for Dark Mode -->
+    <script src="/static/tailwind.config.js"></script>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-gray-900 dark:text-gray-100 min-h-screen">
+    {% include 'navbar.html' %}
+    
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold mb-6 text-accent">All Academies</h1>
+
+        <!-- Loop through academies and display each one -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for academy in academies %}
+                <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4">
+                    <h2 class="text-xl font-semibold text-accent">{{ academy.name }}</h2>
+                    <p class="text-gray-700 dark:text-gray-300">Address: {{ academy.address }}</p>
+                    <p class="text-gray-700 dark:text-gray-300">City: {{ academy.city }}</p>
+                    <p class="text-gray-700 dark:text-gray-300">State: {{ academy.state }}</p>
+                    <p class="text-gray-700 dark:text-gray-300">Pincode: {{ academy.pincode }}</p>
+                    <p class="text-gray-700 dark:text-gray-300">Phone: {{ academy.phone_number }}</p>
+                    <p class="text-gray-700 dark:text-gray-300">Created on: {{ academy.created_at }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

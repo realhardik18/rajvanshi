@@ -1,5 +1,8 @@
-from flask import Flask, render_template, request, redirect, session, flash
-from models import User, Post
+from flask import Flask, render_template, request, redirect, session, flash,jsonify
+from models.user import User
+from models.academy import Academy
+from models.post import Post
+
 from bson import ObjectId
 from werkzeug.utils import secure_filename
 import os
@@ -134,5 +137,17 @@ def user_profile(id):
     is_current_user = "user" in session and session["user"]["id"] == id
 
     return render_template("user_profile.html", user=user, posts=posts, is_current_user=is_current_user)
+
+from flask import request
+
+@app.route('/academy')
+def view_academies():
+    # Fetch all academies from the database
+    academies = Academy.get_all()
+    
+    # Convert ObjectId to string for easier rendering in HTML
+    academies = [{**academy, "_id": str(academy["_id"])} for academy in academies]
+
+    return render_template('academy.html', academies=academies)
 
 app.run(debug=True)
