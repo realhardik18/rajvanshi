@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash,json
 from models.user import User
 from models.academy import Academy
 from models.post import Post
-
+from models.coach import Coach
 from bson import ObjectId
 from werkzeug.utils import secure_filename
 import os
@@ -140,14 +140,63 @@ def user_profile(id):
 
 from flask import request
 
-@app.route('/academy')
+@app.route('/academy', methods=['GET'])
 def view_academies():
-    # Fetch all academies from the database
+    search_query = request.args.get('search', '')  # Get search term from query string
+
+    # Build the search filter
+    filter_criteria = {}
+    if search_query:
+        filter_criteria = {
+            "$or": [
+                {"name": {"$regex": search_query, "$options": "i"}},  # Case-insensitive regex search for name
+                {"city": {"$regex": search_query, "$options": "i"}},  # Case-insensitive regex search for city
+                {"state": {"$regex": search_query, "$options": "i"}},
+                {"pincode": {"$regex": search_query, "$options": "i"}}  # Case-insensitive regex search for state
+            ]
+        }
+
+    # Fetch academies based on search filter
     academies = Academy.get_all()
     
     # Convert ObjectId to string for easier rendering in HTML
     academies = [{**academy, "_id": str(academy["_id"])} for academy in academies]
 
-    return render_template('academy.html', academies=academies)
+    return render_template('academy.html', academies=academies, search_query={})
+
+@app.route('/academy/search', methods=['GET'])
+def search_academies():
+    search_query = request.args.get('search', '')  # Get search term from query string
+
+    # Build the search filter
+    filter_criteria = {}
+    if search_query:
+        filter_criteria = {
+            "$or": [
+                {"name": {"$regex": search_query, "$options": "i"}},  # Case-insensitive regex search for name
+                {"city": {"$regex": search_query, "$options": "i"}},  # Case-insensitive regex search for city
+                {"state": {"$regex": search_query, "$options": "i"}},  # Case-insensitive regex search for state
+                {"pincode": {"$regex": search_query, "$options": "i"}}  # Case-insensitive regex search for state
+            ]
+        }
+
+    # Fetch academies based on search filter
+    academies = Academy.find_specific(filter_criteria)
+    
+    # Convert ObjectId to string for easier rendering in HTML
+    academies = [{**academy, "_id": str(academy["_id"])} for academy in academies]
+
+    return jsonify(academies)
+
+@app.route('/coach', methods=['GET'])
+def coach_page():
+    return render_template('coaches.html')
+
+# Serve coaches data as JSON
+@app.route('/coaches', methods=['GET'])
+def get_coaches():
+    coaches = Coach.send_all()
+    coaches = [{**coach, "_id": str(coach["_id"])} for coach in coaches]
+    return jsonify(coaches)
 
 app.run(debug=True)

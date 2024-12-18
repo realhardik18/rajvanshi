@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coaches</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/tailwind.config.js"></script>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-gray-900 dark:text-gray-100 min-h-screen">
+    {% include 'navbar.html' %}
+
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold mb-6 text-accent">All Coaches</h1>
+
+        <!-- Search Bar -->
+        <div class="mb-6 flex items-center">
+            <input 
+                id="search-input" 
+                type="text" 
+                placeholder="Search by name, academy, city, or speciality" 
+                class="p-2 border border-gray-300 rounded-l-lg w-full sm:w-1/2 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                oninput="filterCoaches()"
+            />
+            <button 
+                id="search-button"
+                class="bg-accent text-white px-4 py-2 rounded-r-lg"
+            >Search</button>
+        </div>
+
+        <!-- Display Coaches -->
+        <div id="coach-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Coaches will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        let allCoaches = [];  // Store all coaches
+
+        // Fetch all coaches when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/coaches')  // Fetch coaches from the API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    allCoaches = data;  // Store all coaches
+                    displayCoaches(allCoaches);  // Display all coaches initially
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+
+        // Function to display coaches
+        function displayCoaches(coaches) {
+            const coachList = document.getElementById('coach-list');
+            coachList.innerHTML = '';  // Clear the current list
+
+            if (coaches.length > 0) {
+                coaches.forEach(coach => {
+                    coachList.innerHTML += `
+                        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 flex items-center space-x-4">
+                            <img 
+                                src="${coach.avatar_url}" 
+                                alt="${coach.name}'s Avatar" 
+                                class="w-16 h-16 rounded-full object-cover"
+                            />
+                            <div>
+                                <h2 class="text-xl font-semibold text-accent">${coach.name}</h2>
+                                <p class="text-gray-700 dark:text-gray-300">Experience: ${coach.experience} years</p>
+                                <p class="text-gray-700 dark:text-gray-300">Academy: ${coach.academy_name}</p>
+                                <p class="text-gray-700 dark:text-gray-300">City: ${coach.city}</p>
+                                <p class="text-gray-700 dark:text-gray-300">Phone: ${coach.number}</p>
+                                <p class="text-gray-700 dark:text-gray-300">Age: ${coach.age}</p>
+                                <p class="text-gray-700 dark:text-gray-300">Speciality: ${coach.speciality}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                coachList.innerHTML = `<p class="text-gray-700 dark:text-gray-300">No coaches found.</p>`;
+            }
+        }
+
+        // Function to filter coaches based on the search term
+        function filterCoaches() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+
+            // Filter coaches in real-time as the user types
+            const filteredCoaches = allCoaches.filter(coach => {
+                return coach.name.toLowerCase().includes(searchQuery) || 
+                    coach.academy_name.toLowerCase().includes(searchQuery) || 
+                    coach.city.toLowerCase().includes(searchQuery) ||
+                    coach.speciality.toLowerCase().includes(searchQuery);
+            });
+
+            displayCoaches(filteredCoaches);  // Update the displayed coaches
+        }
+    </script>
+</body>
+</html>

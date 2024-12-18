@@ -15,20 +15,56 @@
     <div class="container mx-auto px-4 py-6">
         <h1 class="text-3xl font-bold mb-6 text-accent">All Academies</h1>
 
-        <!-- Loop through academies and display each one -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for academy in academies %}
-                <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4">
-                    <h2 class="text-xl font-semibold text-accent">{{ academy.name }}</h2>
-                    <p class="text-gray-700 dark:text-gray-300">Address: {{ academy.address }}</p>
-                    <p class="text-gray-700 dark:text-gray-300">City: {{ academy.city }}</p>
-                    <p class="text-gray-700 dark:text-gray-300">State: {{ academy.state }}</p>
-                    <p class="text-gray-700 dark:text-gray-300">Pincode: {{ academy.pincode }}</p>
-                    <p class="text-gray-700 dark:text-gray-300">Phone: {{ academy.phone_number }}</p>
-                    <p class="text-gray-700 dark:text-gray-300">Created on: {{ academy.created_at }}</p>
-                </div>
-            {% endfor %}
+        <!-- Search Bar -->
+        <div class="mb-6 flex items-center">
+            <input 
+                id="search-input" 
+                type="text" 
+                placeholder="Search by name, city, or state" 
+                class="p-2 border border-gray-300 rounded-l-lg w-full sm:w-1/2 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                oninput="searchAcademies()"
+            />
+        </div>
+
+        <!-- Display Academies -->
+        <div id="academy-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Academies will be inserted here by JavaScript -->
         </div>
     </div>
+
+    <script>
+        // Function to make an AJAX request for search
+        function searchAcademies() {
+            const searchQuery = document.getElementById('search-input').value;
+
+            // Make AJAX request to the server
+            fetch(`/academy/search?search=${searchQuery}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the current list
+                    const academyList = document.getElementById('academy-list');
+                    academyList.innerHTML = '';
+
+                    // Display the results
+                    if (data.length > 0) {
+                        data.forEach(academy => {
+                            academyList.innerHTML += `
+                                <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4">
+                                    <h2 class="text-xl font-semibold text-accent">${academy.name}</h2>
+                                    <p class="text-gray-700 dark:text-gray-300">Address: ${academy.address}</p>
+                                    <p class="text-gray-700 dark:text-gray-300">City: ${academy.city}</p>
+                                    <p class="text-gray-700 dark:text-gray-300">State: ${academy.state}</p>
+                                    <p class="text-gray-700 dark:text-gray-300">Pincode: ${academy.pincode}</p>
+                                    <p class="text-gray-700 dark:text-gray-300">Phone: ${academy.phone_number}</p>                                    
+                                </div>
+                            `;
+                        });
+                    } else {
+                        academyList.innerHTML = `<p class="text-gray-700 dark:text-gray-300">No academies found for the search term "${searchQuery}".</p>`;
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    </script>
 </body>
 </html>
